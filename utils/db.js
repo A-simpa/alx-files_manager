@@ -21,12 +21,11 @@ class DBClient {
 
   async nbUsers() {
     // console.log(this.db)
-     return this.db.collection('users').estimatedDocumentCount();
-   
+    return this.db.collection('users').estimatedDocumentCount();
   }
 
   async nbFiles() {
-      return this.db.collection('files').estimatedDocumentCount();
+    return this.db.collection('files').estimatedDocumentCount();
   }
 }
 const dbClient = new DBClient();
