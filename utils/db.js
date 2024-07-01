@@ -23,14 +23,14 @@ class DBClient {
     // console.log(this.db)
     return new Promise((resolve) => {
       const collection = this.db.collection('users');
-      resolve(collection.countDocuments((err, res) => res));
+      resolve(collection.countDocuments((err, res) => res.n));
     });
   }
 
   async nbFiles() {
     return new Promise((resolve) => {
       const collection = this.db.collection('files');
-      resolve(collection.countDocuments((err, res) => res));
+      resolve(collection.countDocuments((err, res) => res.n));
     });
   }
 }
