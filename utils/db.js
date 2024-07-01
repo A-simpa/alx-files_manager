@@ -21,19 +21,13 @@ class DBClient {
 
   async nbUsers() {
     // console.log(this.db)
-    return new Promise((resolve) => {
-      const collection = this.db.collection('users');
-      resolve(collection.countDocuments((err, res) => res.n));
-    });
+     return this.db.collection('users').estimatedDocumentCount();
+   
   }
 
   async nbFiles() {
-    return new Promise((resolve) => {
-      const collection = this.db.collection('files');
-      resolve(collection.countDocuments((err, res) => res.n));
-    });
+      return this.db.collection('files').estimatedDocumentCount();
   }
 }
-
 const dbClient = new DBClient();
 module.exports = dbClient;
