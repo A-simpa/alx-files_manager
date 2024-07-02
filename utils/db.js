@@ -37,6 +37,13 @@ class DBClient {
     const user = await this.db.collection('users').insertOne({ email, password });
     return user.insertedId;
   }
+
+  async findUser(query) {
+    console.log(query);
+    const isUser = await this.db.collection('users').findOne(query);
+    return (isUser);
+  }
 }
+
 const dbClient = new DBClient();
 module.exports = dbClient;
