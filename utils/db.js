@@ -39,7 +39,6 @@ class DBClient {
   }
 
   async findUser(query) {
-    console.log(query);
     const isUser = await this.db.collection('users').findOne(query);
     return (isUser);
   }
