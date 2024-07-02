@@ -30,9 +30,9 @@ class UsersController {
       return res.status(401).send({ error: 'Unauthorized' });
     }
 
-    return res.send({
+    return res.status(200).send({
       id,
-      email: user.email
+      email: user.email,
     });
   }
 }
