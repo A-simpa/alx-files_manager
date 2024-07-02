@@ -22,7 +22,7 @@ class UsersController {
 
   static async getMe(req, res) {
     const token = req.get('X-Token');
-    // console.log(token)
+    // console.log(token)-
     const id = await redisClient.get(`auth_${token}`);
     const user = await dbClient.findUser({ _id: ObjectId(id) });
 
@@ -32,7 +32,7 @@ class UsersController {
 
     return res.send({
       id,
-      email: user.email,
+      email: user.email
     });
   }
 }
