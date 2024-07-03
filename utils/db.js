@@ -58,7 +58,7 @@ class DBClient {
 
     const returnFile = {
       id: file.insertedId,
-      userId: object.userId,
+      userId: object.userId.toString(),
       name: object.name,
       type: object.type,
       isPublic: object.isPublic,

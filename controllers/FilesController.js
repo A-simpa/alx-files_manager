@@ -1,3 +1,4 @@
+const { ObjectId } = require('mongodb');
 const dbClient = require('../utils/db');
 const redisClient = require('../utils/redis');
 const fileClient = require('../utils/fileCreate');
@@ -44,7 +45,7 @@ class FilesController {
       file.parentId = '0';
     }
 
-    file.userId = userId;
+    file.userId = ObjectId(userId);
     if (file.type === 'folder') {
       const returnFile = await dbClient.addFile(file);
       return res.status(201).send(returnFile);
