@@ -11,6 +11,7 @@ class DBClient {
     this.client.connect((err, client) => {
       if (!err) {
         this.db = client.db(this.database);
+        // this.bucket  = new mongodb.GridFSBucket(this.db)
       }
     });
   }
@@ -39,8 +40,27 @@ class DBClient {
   }
 
   async findUser(query) {
-    const isUser = await this.db.collection('users').findOne(query);
-    return (isUser);
+    const user = await this.db.collection('users').findOne(query);
+    return (user);
+  }
+
+  async findFile(query) {
+    const file = await this.db.collection('files').findOne(query);
+    return (file);
+  }
+
+  async addFile(object) {
+    const file = await this.db.collection('files').insertOne(object);
+    console.log(object);
+    const returnFile = {
+      id: file.insertedId,
+      userId: object.userId,
+      name: object.name,
+      type: object.type,
+      isPublic: object.isPublic,
+      parentId: object.parentId,
+    };
+    return (returnFile);
   }
 }
 
