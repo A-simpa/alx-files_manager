@@ -51,7 +51,7 @@ class DBClient {
 
   async addFile(object) {
     const file = await this.db.collection('files').insertOne(object);
-    console.log(object);
+    // console.log(object);
     const returnFile = {
       id: file.insertedId,
       userId: object.userId,

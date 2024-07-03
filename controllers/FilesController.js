@@ -49,11 +49,11 @@ class FilesController {
       const returnFile = await dbClient.addFile(file);
       return res.status(201).send(returnFile);
     }
-    const localpath = await fileClient.createFile(file.data);
-    file.localpath = localpath;
-    console.log(localpath);
+    const localPath = await fileClient.createFile(file.data);
+    file.localPath = localPath;
+    // console.log(localpath);
     const returnFile = await dbClient.addFile(file);
-    console.log(returnFile);
+    // console.log(returnFile);
     return res.status(201).send(returnFile);
   }
 }

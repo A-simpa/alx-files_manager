@@ -18,7 +18,7 @@ class FileClient {
     } else {
       folder = this.folder;
     }
-    const localpath = path.join(folder, uuidv4());
+    const localpath = path.resolve(folder, uuidv4());
     const binaryData = Buffer.from(data, 'base64');
 
     fs.writeFileSync(localpath, binaryData);
