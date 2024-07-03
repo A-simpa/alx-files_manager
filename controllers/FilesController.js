@@ -1,4 +1,3 @@
-const { ObjectId } = require('mongodb');
 const dbClient = require('../utils/db');
 const redisClient = require('../utils/redis');
 const fileClient = require('../utils/fileCreate');
@@ -10,7 +9,7 @@ class FilesController {
       name: req.body.name,
       type: req.body.type,
       parentId: req.body.parentId,
-      isPublic: req.body.isPublic || 'false',
+      isPublic: req.body.isPublic || false,
       data: req.body.data,
     };
 
@@ -32,16 +31,17 @@ class FilesController {
     }
 
     if (file.parentId) {
-      const isFile = dbClient.findFile({ _id: ObjectId(file.parentId) });
+      const isFile = await dbClient.findFile({ _id: file.parentId });
       if (isFile) {
         if (isFile.type !== 'folder') {
           return res.status(400).send('Parent is not a folder');
         }
+        file.parentId = isFile._id;
       } else {
         return res.status(400).send('Parent not found');
       }
     } else {
-      file.parentId = 0;
+      file.parentId = '0';
     }
 
     file.userId = userId;

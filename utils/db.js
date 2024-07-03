@@ -1,4 +1,5 @@
 const { MongoClient } = require('mongodb');
+const { ObjectId } = require('mongodb');
 
 class DBClient {
   constructor() {
@@ -45,13 +46,16 @@ class DBClient {
   }
 
   async findFile(query) {
-    const file = await this.db.collection('files').findOne(query);
+    const modquery = query;
+    modquery._id = ObjectId(query._id);
+    const file = await this.db.collection('files').findOne(modquery);
     return (file);
   }
 
   async addFile(object) {
     const file = await this.db.collection('files').insertOne(object);
     // console.log(object);
+
     const returnFile = {
       id: file.insertedId,
       userId: object.userId,
@@ -60,6 +64,11 @@ class DBClient {
       isPublic: object.isPublic,
       parentId: object.parentId,
     };
+
+    if (returnFile.parentId === '0') {
+      returnFile.parentId = 0;
+    }
+
     return (returnFile);
   }
 }
