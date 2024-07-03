@@ -33,7 +33,7 @@ class FilesController {
 
     if (file.parentId) {
       const isFile = await dbClient.findFile({ _id: file.parentId });
-    //   console.log(isFile);
+      //   console.log(isFile);
       if (isFile) {
         if (isFile.type !== 'folder') {
           return res.status(400).send('Parent is not a folder');
