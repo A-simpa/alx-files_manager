@@ -46,15 +46,21 @@ class FilesController {
       file.parentId = '0';
     }
 
-    file.userId = ObjectId(userId);
+    const formatFile = {
+      userId: ObjectId(userId),
+      name: file.name,
+      type: file.type,
+      parentId: file.parentId,
+      isPublic: file.isPublic,
+    };
     if (file.type === 'folder') {
-      const returnFile = await dbClient.addFile(file);
+      const returnFile = await dbClient.addFile(formatFile);
       return res.status(201).send(returnFile);
     }
     const localPath = await fileClient.createFile(data);
-    file.localPath = localPath;
+    formatFile.localPath = localPath;
     // console.log(localpath);
-    const returnFile = await dbClient.addFile(file);
+    const returnFile = await dbClient.addFile(formatFile);
     // console.log(returnFile);
     return res.status(201).send(returnFile);
   }
