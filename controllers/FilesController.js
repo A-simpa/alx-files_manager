@@ -32,13 +32,13 @@ class FilesController {
     }
 
     if (file.parentId) {
-      const isFile = await dbClient.findFile({ _id: file.parentId });
+      const isFile = await dbClient.findFile({ _id: ObjectId(file.parentId) });
       //   console.log(isFile);
       if (isFile) {
         if (isFile.type !== 'folder') {
           return res.status(400).send('Parent is not a folder');
         }
-        file.parentId = isFile._id;
+        file.parentId = ObjectId(file.parentId);
       } else {
         return res.status(400).send('Parent not found');
       }
@@ -51,13 +51,32 @@ class FilesController {
       const returnFile = await dbClient.addFile(file);
       return res.status(201).send(returnFile);
     }
-    file.data = data;
-    const localPath = await fileClient.createFile(file.data);
+    const localPath = await fileClient.createFile(data);
     file.localPath = localPath;
     // console.log(localpath);
     const returnFile = await dbClient.addFile(file);
     // console.log(returnFile);
     return res.status(201).send(returnFile);
   }
+
+  static async getShow(req, res) {
+    const { id } = req.params;
+    const token = req.get;
+    const userId = await redisClient.get(`auth_${token}`);
+
+    if (!userId) {
+      return res.status(401).send({ error: 'Unauthorized' });
+    }
+
+    const file = await dbClient.findFile({ _id: id, userId: ObjectId(userId) });
+    if (!file) {
+      return res.status(404).send({ error: 'Not found' });
+    }
+    return res.status(200).send(file);
+  }
+
+  //   static async getIndex(req, res) {
+
+  //   }
 }
 module.exports = FilesController;
