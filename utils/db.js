@@ -46,6 +46,9 @@ class DBClient {
 
   async findFile(query) {
     const file = await this.db.collection('files').findOne(query);
+    if (!file) {
+      return file;
+    }
     return ({
       id: file._id,
       userId: file.userId,
@@ -74,6 +77,32 @@ class DBClient {
     }
 
     return (returnFile);
+  }
+
+  async findAllFile(query, page) {
+    const files = await this.db.collection('files').find(query, {
+      skip: page * 20,
+      limit: 20,
+      projection: {
+        _id: 1,
+        userId: 1,
+        name: 1,
+        type: 1,
+        isPublic: 1,
+        parentId: 1,
+      },
+    }).toArray();
+    files.map((file) => ({
+      id: file._id,
+      userId: file.userId,
+      name: file.name,
+      type: file.type,
+      isPublic: file.isPublic,
+      parentId: file.parentId,
+    }));
+    // console.log(files.length);
+    // console.log(await this.nbFiles())
+    return (files);
   }
 }
 
