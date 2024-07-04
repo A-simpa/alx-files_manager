@@ -15,6 +15,10 @@ class AuthController {
     // console.log(email);
     // console.log(password);
 
+    if ((!email) || (!password)) {
+      return res.status(401).send({ error: 'Unauthorized' });
+    }
+
     const user = await dbClient.findUser({ email, password: sha1(password) });
     if (user === null) {
       return res.status(401).send({ error: 'Unauthorized' });

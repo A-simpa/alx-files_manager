@@ -86,7 +86,7 @@ class FilesController {
     const token = req.get('X-Token');
     const parentId = req.query.parentId || '0';
     // console.log(parentId);
-    const page  = req.query.page || 0;
+    const page = req.query.page || 0;
     const userId = await redisClient.get(`auth_${token}`);
 
     if (!userId) {
