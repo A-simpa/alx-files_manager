@@ -28,7 +28,7 @@ class FilesController {
     }
 
     if ((!data) && (file.type !== 'folder')) {
-      return res.status(400).send('Missing data');
+      return res.status(400).send({ error: 'Missing data' });
     }
 
     if (file.parentId) {
@@ -36,11 +36,11 @@ class FilesController {
       //   console.log(isFile);
       if (isFile) {
         if (isFile.type !== 'folder') {
-          return res.status(400).send('Parent is not a folder');
+          return res.status(400).send({ error: 'Parent is not a folder' });
         }
         file.parentId = ObjectId(file.parentId);
       } else {
-        return res.status(400).send('Parent not found');
+        return res.status(400).send({ error: 'Parent not found' });
       }
     } else {
       file.parentId = '0';
@@ -53,6 +53,7 @@ class FilesController {
       parentId: file.parentId,
       isPublic: file.isPublic,
     };
+
     if (file.type === 'folder') {
       const returnFile = await dbClient.addFile(formatFile);
       return res.status(201).send(returnFile);
